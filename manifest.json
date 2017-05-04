@@ -15,7 +15,9 @@
 	},
 
   "permissions": [
-    "bookmarks"
+    "bookmarks",
+    "chrome://favicon/*",
+    "tabs"  
   ]
   
 }

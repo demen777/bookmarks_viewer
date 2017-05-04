@@ -4,9 +4,9 @@ function showTree() {
     chrome.bookmarks.getTree(handleGetTree);
 }
 
-function processChildNode(treeParentNode, childNode) {
-    var treeChildNode = treeParentNode.createChildNode(childNode.title, false, 'images/star.png', null, null);
-    var curProcessChildNode = processChildNode.bind(null, treeChildNode);
+function processChildNode(childNode) {
+    var treeChildNode = this.createChildNode(childNode.title, false, 'images/star.png', null, null);
+    var curProcessChildNode = processChildNode.bind(treeChildNode);
     if(childNode.children != undefined) {
         childNode.children.forEach(curProcessChildNode);
     }
@@ -18,7 +18,7 @@ function handleGetTree(bookmarkTreeNodes) {
     if (bookmarkTreeNodes[0].children != undefined) {
         bookmarkTreeNodes[0].children.forEach(function(node) {
             var curTreeNode = tree.createNode(node.title, false, 'images/star.png', null, null, null);
-            var curProcessChildNode = processChildNode.bind(null, curTreeNode);
+            var curProcessChildNode = processChildNode.bind(curTreeNode);
             if (node.children != undefined) {
                 node.children.forEach(curProcessChildNode);
             }

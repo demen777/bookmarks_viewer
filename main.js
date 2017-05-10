@@ -7,25 +7,26 @@ function showTree() {
 function handleGetTree(bookmarkTreeNodes) {
     var tree = createTree('div_tree', 'white');
     tree.doubleClickNode = openUrl;
-    if (bookmarkTreeNodes[0].children != undefined) {
-        bookmarkTreeNodes[0].children.forEach(function(node) {
-            var curTreeNode = tree.createNode(node.title, false, 'images/folder.png', null, null, null);
-            var curProcessChildNode = processChildNode.bind(curTreeNode);
-            if (node.children != undefined) {
-                node.children.forEach(curProcessChildNode);
-            }
-        })
-    }
+    var curProcessChildNode = processChildNode.bind(null, tree);
+    bookmarkTreeNodes[0].children.forEach(curProcessChildNode);
     tree.drawTree();
 }
 
-function processChildNode(childNode) {
-    var icon = childNode.url ? 'chrome://favicon/' + childNode.url : 'images/folder.png';
-    treeChildNode = this.createChildNode(childNode.title, false, icon, childNode.url, null);
-    var curProcessChildNode = processChildNode.bind(treeChildNode);
-    if(childNode.children != undefined) {
-        childNode.children.forEach(curProcessChildNode);
+function processChildNode(parent, node) {
+    var treeNode = ('parent' in parent)
+        // parent is node 
+        ? parent.createChildNode(node.title, false, choiceIcon(node), node.url, 'context1')
+        // parent is tree
+        : parent.createNode(node.title, false, choiceIcon(node), null, null, 'context1');
+    var curProcessChildNode = processChildNode.bind(null, treeNode);
+    if (node.children) {
+        node.children.forEach(curProcessChildNode);
     }
+}
+
+function choiceIcon(node) {
+    var icon = node.url ? 'chrome://favicon/' + node.url : 'images/folder.png';
+    return icon;
 }
 
 function openUrl(node) {

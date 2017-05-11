@@ -13,50 +13,59 @@ function handleGetTree(bookmarkTreeNodes) {
     tree.drawTree();
 }
 
-function processChildNode(parent, node) {
+function processChildNode(parent, bookmarkNode) {
+    var backgroundPage = chrome.extension.getBackgroundPage();
+    if (backgroundPage.hiddenBookmarkSet.has(bookmarkNode.id)) {
+        return;
+    }
     var treeNode = ('parent' in parent)
         // parent is node 
-        ? parent.createChildNode(node.title, false, choiceIcon(node), node.url, 
-            node.url ? 'bookmark_context_menu' : 'folder_context_menu')
+        ? parent.createChildNode(bookmarkNode.title, backgroundPage.autoExpandedBookmarkSet.has(bookmarkNode.id), 
+            choiceIcon(bookmarkNode), {id: bookmarkNode.id, url: bookmarkNode.url}, 
+            bookmarkNode.url ? 'bookmark_context_menu' : 'folder_context_menu')
         // parent is tree
-        : parent.createNode(node.title, false, choiceIcon(node), null, null, 'first_level_folder_context_menu');
+        : parent.createNode(bookmarkNode.title, backgroundPage.autoExpandedBookmarkSet.has(bookmarkNode.id), 
+            choiceIcon(bookmarkNode), null,
+            {id: bookmarkNode.id, url: bookmarkNode.url}, 'first_level_folder_context_menu');
     var curProcessChildNode = processChildNode.bind(null, treeNode);
-    if (node.children) {
-        node.children.forEach(curProcessChildNode);
+    if (bookmarkNode.children) {
+        bookmarkNode.children.forEach(curProcessChildNode);
     }
 }
 
-function choiceIcon(node) {
-    var icon = node.url ? 'chrome://favicon/' + node.url : 'images/folder.png';
+function choiceIcon(bookmarkNode) {
+    var icon = bookmarkNode.url ? 'chrome://favicon/' + bookmarkNode.url : 'images/folder.png';
     return icon;
 }
 
-function openUrl(node) {
-    if (node.tag) {
+function openUrl(treeNode) {
+    if (treeNode.tag.url) {
         chrome.tabs.create({
-            url: node.tag
+            url: treeNode.tag.url
         });
     }
 }
 
+
 function generateContextMenu() {
+    var backgroundPage = chrome.extension.getBackgroundPage();
     var enableAutoExpandMenuItem = 
     { 
         text: 'Enable auto expand',
-        icon: 'images/expand.png',
-        action: function(node) {}
+        icon: null,
+        action: backgroundPage.enableAutoExpand
     };
     var disableAutoExpandMenuItem = 
     { 
         text: 'Disable auto expand',
-        icon: 'images/expand.png',
-        action: function(node) {}
-    };    
+        icon: null,
+        action: backgroundPage.disableAutoExpand
+    };
     var enableAutoHideMenuItem = 
     { 
         text: 'Enable auto hide',
-        icon: 'images/expand.png',
-        action: function(node) {}
+        icon: null,
+        action: backgroundPage.hide
     };
     var res = 
     {

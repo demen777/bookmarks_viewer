@@ -27,3 +27,8 @@ function hide(treeNode) {
     chrome.storage.local.set({'hiddenBookmarkSet': [...hiddenBookmarkSet]});
     treeNode.removeNode();    
 }
+
+function showAllHidden(treeNode) {
+    hiddenBookmarkSet.clear();
+    chrome.storage.local.set({'hiddenBookmarkSet': [...hiddenBookmarkSet]});
+}

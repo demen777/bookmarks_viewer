@@ -55,31 +55,34 @@ function openUrl(url) {
 
 function generateContextMenu() {
     var backgroundPage = chrome.extension.getBackgroundPage();
-    var enableAutoExpandMenuItem = 
-    { 
+    var enableAutoExpandMenuItem = { 
         text: 'Enable auto expand',
         icon: null,
         action: backgroundPage.enableAutoExpand
     };
-    var disableAutoExpandMenuItem = 
-    { 
+    var disableAutoExpandMenuItem = { 
         text: 'Disable auto expand',
         icon: null,
         action: backgroundPage.disableAutoExpand
     };
-    var enableAutoHideMenuItem = 
-    { 
+    var enableAutoHideMenuItem = { 
         text: 'Enable auto hide',
         icon: null,
         action: backgroundPage.hide
     };
+    var showAllHiddenMenuItem = {
+        text: 'Show all hidden',
+        icon: null,
+        action: function () { backgroundPage.showAllHidden(); location.reload(); }
+    }
     var res = 
     {
         'first_level_folder_context_menu': {
             elements: [
                 enableAutoExpandMenuItem,
                 disableAutoExpandMenuItem,
-                enableAutoHideMenuItem
+                enableAutoHideMenuItem,
+                showAllHiddenMenuItem
             ]
         },
         'folder_context_menu': {

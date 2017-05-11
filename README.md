@@ -1,3 +1,2 @@
 *TODO:*
-1. Reset auto hide
-
+1. Remove expand-collapse on right-click

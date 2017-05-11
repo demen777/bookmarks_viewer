@@ -1,3 +1,3 @@
 *TODO:*
-1. Add context menu for auto-expand folder
-2. Add context menu for hide folder
+1. Reset auto hide
+

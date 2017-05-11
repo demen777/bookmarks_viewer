@@ -25,5 +25,5 @@ function disableAutoExpand(treeNode) {
 function hide(treeNode) {
     hiddenBookmarkSet.add(treeNode.tag.id);
     chrome.storage.local.set({'hiddenBookmarkSet': [...hiddenBookmarkSet]});
-    treeNode.expandNode();    
+    treeNode.removeNode();    
 }

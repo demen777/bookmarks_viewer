@@ -1,2 +1,2 @@
-*TODO:*
-1. Remove expand-collapse on right-click
+*TO DO*
+1. Change icons

@@ -7,7 +7,7 @@ function showTree() {
 function handleGetTree(bookmarkTreeNodes) {
     var context_menu = generateContextMenu();
     var tree = createTree('div_tree', 'white', context_menu);
-    tree.selectNode = clickNode;
+    tree.onSpanClick = clickNode;
     var curProcessChildNode = processChildNode.bind(null, tree);
     bookmarkTreeNodes[0].children.forEach(curProcessChildNode);
     tree.drawTree();

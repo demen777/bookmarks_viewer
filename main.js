@@ -7,7 +7,7 @@ function showTree() {
 function handleGetTree(bookmarkTreeNodes) {
     var context_menu = generateContextMenu();
     var tree = createTree('div_tree', 'white', context_menu);
-    tree.doubleClickNode = openUrl;
+    tree.selectNode = clickNode;
     var curProcessChildNode = processChildNode.bind(null, tree);
     bookmarkTreeNodes[0].children.forEach(curProcessChildNode);
     tree.drawTree();
@@ -38,12 +38,18 @@ function choiceIcon(bookmarkNode) {
     return icon;
 }
 
-function openUrl(treeNode) {
+function clickNode(treeNode) {
     if (treeNode.tag.url) {
-        chrome.tabs.create({
-            url: treeNode.tag.url
-        });
+        openUrl(treeNode.tag.url);
+    } else {
+        treeNode.toggleNode();
     }
+}
+
+function openUrl(url) {
+    chrome.tabs.create({
+        url: url
+    });
 }
 
 

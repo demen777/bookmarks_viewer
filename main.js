@@ -52,6 +52,13 @@ function openUrl(url) {
     });
 }
 
+function deleteBookmark(treeNode) {
+    var needDelete = confirm("Remove bookmark '" + treeNode.text + "'?");
+    if (needDelete) {
+        chrome.bookmarks.remove(treeNode.tag.id);
+        treeNode.removeNode();
+    }
+}
 
 function generateContextMenu() {
     var backgroundPage = chrome.extension.getBackgroundPage();
@@ -75,6 +82,11 @@ function generateContextMenu() {
         icon: null,
         action: function () { backgroundPage.showAllHidden(); location.reload(); }
     }
+    var deleteBookmarkMenuItem = {
+        text: 'Delete bookmark',
+        icon: null,
+        action: deleteBookmark
+    }
     var res = 
     {
         'first_level_folder_context_menu': {
@@ -92,7 +104,7 @@ function generateContextMenu() {
             ]
         },
         'bookmark_context_menu': {
-            elements: []
+            elements: [deleteBookmarkMenuItem]
         }
     };
     return res;

@@ -56,17 +56,17 @@ function openUrl(url) {
 function generateContextMenu() {
     var backgroundPage = chrome.extension.getBackgroundPage();
     var enableAutoExpandMenuItem = { 
-        text: 'Enable auto expand',
+        text: 'Autoexpand ON',
         icon: null,
         action: backgroundPage.enableAutoExpand
     };
     var disableAutoExpandMenuItem = { 
-        text: 'Disable auto expand',
+        text: 'Autoexpand OFF',
         icon: null,
         action: backgroundPage.disableAutoExpand
     };
     var enableAutoHideMenuItem = { 
-        text: 'Enable auto hide',
+        text: 'Hide folder',
         icon: null,
         action: backgroundPage.hide
     };
